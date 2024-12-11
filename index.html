@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength Evaluator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('C:/Users/msi_pc/Desktop/wallhaven-4gv937.png'); /* Background image */
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+        }
+        .container {
+            max-width: 600px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            text-align: center;
+        }
+        input[type="password"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #result, #suggestions {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Password Strength Evaluator!</h1>
+        <input type="password" id="password" placeholder="Enter a password to evaluate">
+        <button onclick="evaluatePasswordStrength()">Evaluate</button>
+        <div id="result"></div>
+        <div id="suggestions"></div>
+    </div>
+
+    <script>
+        function evaluatePasswordStrength() {
+            const password = document.getElementById('password').value;
+            let strength = 0;
+            let suggestions = [];
+
+            // Check length
+            if (password.length >= 12) {
+                strength += 2;
+            } else if (password.length >= 8) {
+                strength += 1;
+            } else {
+                suggestions.push("Make the password at least 8 characters long.");
+            }
+
+            // Check for uppercase and lowercase letters
+            if (/[A-Z]/.test(password) && /[a-z]/.test(password)) {
+                strength += 1;
+            } else {
+                suggestions.push("Use a mix of uppercase and lowercase letters.");
+            }
+
+            // Check for digits
+            if (/\d/.test(password)) {
+                strength += 1;
+            } else {
+                suggestions.push("Include at least one numeric digit.");
+            }
+
+            // Check for special characters
+            if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+                strength += 1;
+            } else {
+                suggestions.push("Include at least one special character (e.g., !, @, #).");
+            }
+
+            // Evaluate overall strength
+            let status;
+            if (strength >= 5) {
+                status = "Strong";
+            } else if (strength >= 3) {
+                status = "Moderate";
+            } else {
+                status = "Weak";
+            }
+
+            document.getElementById('result').innerText = `Password Strength: ${status}`;
+            document.getElementById('suggestions').innerHTML = suggestions.length ? `<p>Suggestions to improve your password:</p><ul>${suggestions.map(s => `<li>${s}</li>`).join('')}</ul>` : '';
+        }
+    </script>
+</body>
+</html>
